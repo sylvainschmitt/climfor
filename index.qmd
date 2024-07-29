@@ -1,9 +1,9 @@
 ```{r setup}
 #| include: false 
-rm(list = ls())
 library(tidyverse) 
 library(sf) 
 library(leaflet)
+library(terra)
 ```
 
 # Introduction {.unnumbered}
@@ -23,7 +23,11 @@ st_read("results/data/amazonia/", quiet = TRUE) %>%
 Quick list:
 
 -   python xclim and climate-indices
--   mean, extremes, trends, indices, dry season
+-   indices: ds, fwi, dryspell etc to be computed
+-   adjust deforestation to clim data res
+-   test kendall's tau
+-   mean, extremes, trends (xarray polyfit), indices, dry season
 -   Whole Amazonia
 -   CHIRPS, GSHTD, MODIS LST, TMF, ...
+-   moisture flow @10.5194/essd-12-3177-2020, <https://doi.pangaea.de/10.1594/PANGAEA.912710>
 -   evaluation against stations

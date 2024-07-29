@@ -1,0 +1,82 @@
+```{r setup}
+#| include: false 
+rm(list = ls())
+library(tidyverse) 
+library(terra)
+```
+
+# Temperature {.unnumbered}
+
+GSHTD
+
+```{r gshtd}
+#| message: false
+#| warning: false
+rast("results/data/temperature/gshtd.nc", "tas") %>% 
+  as.data.frame(xy = TRUE) %>% 
+  gather(index, tas, -x, -y) %>% 
+  mutate(index = as.numeric(gsub("tas_", "", index))) %>% 
+  mutate(date = time(rast("results/data/temperature/gshtd.nc", "tas"))[index]) %>% 
+  ggplot(aes(date, tas)) +
+  geom_line(aes(group = paste(x,y)), col = "lightgrey", alpha = 0.1) +
+  geom_smooth(se = FALSE) +
+  theme_bw()
+```
+
+```{r}
+#| message: false
+#| warning: false
+rast("results/data/temperature/gshtd.nc", "tas") %>% 
+  as.data.frame(xy = TRUE) %>% 
+  gather(index, tas, -x, -y) %>% 
+  mutate(index = as.numeric(gsub("tas_", "", index))) %>% 
+  mutate(date = time(rast("results/data/temperature/gshtd.nc", "tas"))[index]) %>% 
+  filter(month(date) == 1) %>% 
+  group_by(x, y, year = year(date)) %>% 
+  summarise(tas = mean(tas)) %>% 
+  ggplot(aes(year, tas)) +
+  geom_point(aes(group = paste(x,y)), col = "lightgrey", alpha = 0.1) +
+  geom_smooth(se = FALSE, method = "lm") +
+  theme_bw()
+```
+
+```{r}
+#| message: false
+#| warning: false
+rast("results/data/temperature/gshtd.nc", "tas") %>% 
+  as.data.frame(xy = TRUE) %>% 
+  gather(index, tas, -x, -y) %>% 
+  mutate(index = as.numeric(gsub("tas_", "", index))) %>% 
+  mutate(date = time(rast("results/data/temperature/gshtd.nc", "tas"))[index]) %>% 
+  filter(month(date) == 1) %>% 
+  group_by(x, y, year = year(date)) %>% 
+  summarise(tas = mean(tas)) %>% 
+  ungroup() %>% 
+  nest(tas, year) %>% 
+  mutate(models = map(data, ~broom::tidy(lm(tas ~ year, data = .)))) %>% 
+  select(-data) %>% 
+  unnest() %>% 
+  filter(term == "year") %>% 
+  ggplot(aes(x, y, fill = estimate)) +
+  geom_raster() +
+  theme_bw() +
+  scale_fill_viridis_c()
+```
+
+```{r}
+#| message: false
+#| warning: false
+rast("results/data/forest/tmf.nc")[["tmf_year=2022"]] %>% 
+  as.data.frame(xy = TRUE) %>% 
+    mutate(type = recode(`tmf_year=2022`, 
+                       "1" = "undisturbed",
+                       "2" = "degraded",
+                       "3" = "deforested",
+                       "4" = "regrowth",
+                       "5" = "water",
+                       "6" = "other")) %>% 
+  ggplot(aes(y, x, fill = type)) +
+  geom_raster() +
+  theme_bw() +
+  scale_fill_viridis_d()
+```

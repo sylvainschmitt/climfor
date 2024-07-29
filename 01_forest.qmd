@@ -1,0 +1,31 @@
+```{r setup}
+#| include: false 
+rm(list = ls())
+library(tidyverse) 
+library(terra)
+```
+
+# Forest {.unnumbered}
+
+TMF
+
+```{r forest}
+#| message: false
+#| warning: false
+rast("results/data/forest/tmf.nc") %>% 
+  as.data.frame() %>% 
+  gather(year, value) %>% 
+  mutate(year = as.numeric(gsub("tmf_year=", "", year))) %>% 
+  mutate(type = recode(value, 
+                       "1" = "undisturbed",
+                       "2" = "degraded",
+                       "3" = "deforested",
+                       "4" = "regrowth",
+                       "5" = "water",
+                       "6" = "other")) %>% 
+  group_by(year, type) %>% 
+  summarise(N = n()) %>% 
+  ggplot(aes(year, N, col = type)) +
+  geom_line() +
+  theme_bw()
+```
