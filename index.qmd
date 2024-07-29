@@ -1,0 +1,29 @@
+```{r setup}
+#| include: false 
+rm(list = ls())
+library(tidyverse) 
+library(sf) 
+library(leaflet)
+```
+
+# Introduction {.unnumbered}
+
+Define the project.
+
+```{r amazonia}
+#| message: false
+#| warning: false
+st_read("results/data/amazonia/", quiet = TRUE) %>% 
+  st_union() %>% 
+  leaflet() %>% 
+  addPolygons() %>% 
+  addTiles()
+```
+
+Quick list:
+
+-   python xclim and climate-indices
+-   mean, extremes, trends, indices, dry season
+-   Whole Amazonia
+-   CHIRPS, GSHTD, MODIS LST, TMF, ...
+-   evaluation against stations

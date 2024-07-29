@@ -1,0 +1,16 @@
+---
+title: "Conda environments for the snakemake workflow"
+author: Sylvain Schmitt -
+date: today
+date-format: medium
+format: 
+  gfm:
+    toc: true
+    toc-depth: 2
+---
+
+This folder will contains the definition of the conda environments for the snakemake workflow
+
+```{r, comment=""}
+fs::dir_tree()
+```

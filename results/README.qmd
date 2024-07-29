@@ -1,0 +1,16 @@
+---
+title: "Results of the snakemake workflow"
+author: Sylvain Schmitt -
+date: today
+date-format: medium
+format: 
+  gfm:
+    toc: true
+    toc-depth: 2
+---
+
+This folder will contains the results of the snakemake workflow used by analyses in the quarto document.
+
+```{r, comment=""}
+fs::dir_tree()
+```

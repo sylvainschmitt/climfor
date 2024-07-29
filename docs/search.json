@@ -1,0 +1,23 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "climfor",
+    "section": "",
+    "text": "Introduction\nDefine the project.\n\n\nCode\nst_read(\"results/data/amazonia/\", quiet = TRUE) %&gt;% \n  st_union() %&gt;% \n  leaflet() %&gt;% \n  addPolygons() %&gt;% \n  addTiles()\n\n\n\n\n\n\nQuick list:\n\npython xclim and climate-indices\nmean, extremes, trends, indices, dry season\nWhole Amazonia\nCHIRPS, GSHTD, MODIS LST, TMF, …\nevaluation against stations"
+  },
+  {
+    "objectID": "literature.html#to-read",
+    "href": "literature.html#to-read",
+    "title": "Literature",
+    "section": "To read",
+    "text": "To read"
+  },
+  {
+    "objectID": "meetings.html#xxxx23---kick-off",
+    "href": "meetings.html#xxxx23---kick-off",
+    "title": "Meetings",
+    "section": "XX/XX/23 - Kick off",
+    "text": "XX/XX/23 - Kick off\nWho"
+  }
+]
