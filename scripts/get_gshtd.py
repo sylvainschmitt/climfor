@@ -71,7 +71,7 @@ gshtd = get_gshtd(area.bounds).chunk({"lon": 1000, "lat": 1000, "time": 10})
 gshtd.to_netcdf(nc)
 
 # plot
-from matplotlib import pyplot as plt
-area.plot()
-gshtd.sel(time="2001-01-01")["tas"].plot()
-plt.show()
+# from matplotlib import pyplot as plt
+# area.plot()
+# gshtd.sel(time="2001-01-01")["tas"].plot()
+# plt.show()

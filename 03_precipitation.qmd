@@ -1,6 +1,5 @@
 ```{r setup}
 #| include: false 
-rm(list = ls())
 library(tidyverse) 
 library(terra)
 ```
@@ -9,9 +8,34 @@ library(terra)
 
 CHIRPS
 
+```{r}
+rast("results/data/precipitation/chirps_tau.nc") %>% 
+  as.data.frame(xy = T) %>% 
+  ggplot(aes(x,y)) +
+  geom_raster(aes(fill = tau)) +
+  geom_point(aes(size = pval < 0.05)) +
+  theme_bw() +
+  scale_fill_gradient2(expression(tau)) +
+  scale_size_manual(values = c(NA, .1), guide = "none")
+```
+
+```{r}
+# deforest <- rast("results/data/forest/deforestation_year.tif") %>% 
+#   resample(rast(tau)) %>% 
+#   as.data.frame(xy = T)
+# deforest$tau <- terra::extract(rast(tau), deforest[c("x", "y")])$tau
+# deforest %>% 
+#   mutate(age = 2022-year) %>% 
+#   ggplot(aes(age, tau)) +
+#   geom_point() +
+#   theme_bw() +
+#   geom_smooth()
+```
+
 ```{r chirps}
 #| message: false
 #| warning: false
+#| eval: false
 rast("results/data/precipitation/chirps.nc") %>% 
   as.data.frame(xy = TRUE) %>% 
   gather(index, pr, -x, -y) %>% 
@@ -26,6 +50,7 @@ rast("results/data/precipitation/chirps.nc") %>%
 ```{r}
 #| message: false
 #| warning: false
+#| eval: false
 rast("results/data/precipitation/chirps.nc") %>% 
   as.data.frame(xy = TRUE) %>% 
   gather(index, pr, -x, -y) %>% 
@@ -43,6 +68,7 @@ rast("results/data/precipitation/chirps.nc") %>%
 ```{r}
 #| message: false
 #| warning: false
+#| eval: false
 rast("results/data/precipitation/chirps.nc") %>% 
   as.data.frame(xy = TRUE) %>% 
   gather(index, pr, -x, -y) %>% 
@@ -66,6 +92,7 @@ rast("results/data/precipitation/chirps.nc") %>%
 ```{r}
 #| message: false
 #| warning: false
+#| eval: false
 rast("results/data/forest/tmf.nc")[["tmf_year=2022"]] %>% 
   as.data.frame(xy = TRUE) %>% 
     mutate(type = recode(`tmf_year=2022`, 

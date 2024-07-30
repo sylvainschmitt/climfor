@@ -9,6 +9,21 @@ library(terra)
 
 TMF
 
+```{r}
+rast("results/data/forest/deforestation_year.tif")
+```
+
+```{r}
+as.data.frame(t2) %>% 
+  group_by(constant) %>% 
+  summarise(N = n()) %>% 
+  arrange(constant) %>% 
+  mutate(Ntot = cumsum(N)) %>% 
+  ggplot(aes(constant, Ntot)) +
+  geom_line() +
+  theme_bw()
+```
+
 ```{r forest}
 #| message: false
 #| warning: false
