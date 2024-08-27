@@ -7,10 +7,8 @@ amazonia = snakemake.input
 nc = snakemake.output
 
 # test
-# amazonia = "results/data/amazonia"
-# amazonia = "results/data/guaviare"
-# amazonia = "results/data/capricho"
-# nc = "results/data/temperature/gshtd.nc"
+amazonia = "results/data/amazonia"
+zarr = "results/data/precipitation/chirps.zarr"
         
 # libs
 import geopandas as gp
@@ -26,8 +24,8 @@ def get_var(var, leg):
         if(var == "tasmax"):
                 col = "TMAX"
         ic = ee.ImageCollection("projects/sat-io/open-datasets/GSHTD/" + col)
-        ds = xr.open_mfdataset(
-                [ic],
+        ds = xr.open_dataset(
+                ic,
                 engine='ee',
                 projection=ic.first().select(0).projection(),
                 geometry=leg
@@ -68,10 +66,10 @@ def get_gshtd(bounds):
 area = gp.read_file(amazonia).dissolve()
 ee.Initialize(opt_url='https://earthengine-highvolume.googleapis.com')
 gshtd = get_gshtd(area.bounds).chunk({"lon": 1000, "lat": 1000, "time": 10})
-gshtd.to_netcdf(nc)
+gshtd.to_zarr(zarr)
 
-# plot
+# check
+# ds = xr.open_dataset(zarr)
 # from matplotlib import pyplot as plt
-# area.plot()
-# gshtd.sel(time="2001-01-01")["tas"].plot()
+# ds.sel(time="2001-01-01").pr.plot()
 # plt.show()

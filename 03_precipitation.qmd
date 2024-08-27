@@ -2,21 +2,29 @@
 #| include: false 
 library(tidyverse) 
 library(terra)
+library(sf)
 ```
 
 # Precipitation {.unnumbered}
 
-CHIRPS
+CHIRPS compare with <https://www.mdpi.com/2073-4441/12/5/1244>
 
 ```{r}
-rast("results/data/precipitation/chirps_tau.nc") %>% 
+amazonia <- read_sf("results/data/amazonia/") %>% 
+  st_union() %>% 
+  st_sf()
+chirps <- rast("results/data/precipitation/chirps_tau.nc") %>% 
+  mask(amazonia) %>% 
+  project(amazonia) %>% 
   as.data.frame(xy = T) %>% 
-  ggplot(aes(x,y)) +
-  geom_raster(aes(fill = tau)) +
-  geom_point(aes(size = pval < 0.05)) +
+  filter(pval < 0.05) %>% 
+  dplyr::select(-pval) %>% 
+  rast()
+ggplot() +
+  tidyterra::geom_spatraster(data = chirps) +
+  geom_sf(data = amazonia, fill = NA) +
   theme_bw() +
-  scale_fill_gradient2(expression(tau)) +
-  scale_size_manual(values = c(NA, .1), guide = "none")
+  scale_fill_gradient2(expression(tau), na.value = NA) 
 ```
 
 ```{r}
@@ -36,12 +44,11 @@ rast("results/data/precipitation/chirps_tau.nc") %>%
 #| message: false
 #| warning: false
 #| eval: false
-rast("results/data/precipitation/chirps.nc") %>% 
+rast("results/data/precipitation/chirps_year.nc") %>% 
   as.data.frame(xy = TRUE) %>% 
-  gather(index, pr, -x, -y) %>% 
-  mutate(index = as.numeric(gsub("pr_", "", index))) %>% 
-  mutate(date = time(rast("results/data/precipitation/chirps.nc"))[index]) %>% 
-  ggplot(aes(date, pr)) +
+  gather(year, pr, -x, -y) %>% 
+  mutate(year = as.numeric(gsub("pr_year=", "", year))) %>% 
+  ggplot(aes(year, pr)) +
   geom_line(aes(group = paste(x,y)), col = "lightgrey", alpha = 0.1) +
   geom_smooth(se = FALSE) +
   theme_bw()
