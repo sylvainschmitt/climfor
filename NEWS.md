@@ -1,3 +1,4 @@
+-   climfor 0.1.0.9006: gshtd ind begin, book refactoring
 -   climfor 0.1.0.9005: gshtd zarr dl working
 -   climfor 0.1.0.9004: chirps & gshtd zarr dl & dask+slurm
 -   climfor 0.1.0.9003: tmf deforest & kendall's tau for chirps

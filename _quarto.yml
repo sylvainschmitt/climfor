@@ -8,9 +8,9 @@ book:
   date: last-modified
   chapters:
     - index.qmd
-    - 01_forest.qmd
+    - 01_precipitation.qmd
     - 02_temperature.qmd
-    - 03_precipitation.qmd
+    - 03_forest.qmd
   appendices:
     - literature.qmd
     - meetings.qmd

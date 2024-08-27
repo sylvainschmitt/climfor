@@ -10,6 +10,12 @@ library(terra)
 
 Define the project.
 
+```{r scheme}
+#| message: false
+#| warning: false
+knitr::include_graphics("dag/scheme.png")
+```
+
 ```{r amazonia}
 #| message: false
 #| warning: false
@@ -31,3 +37,6 @@ Quick list:
 -   CHIRPS, GSHTD, MODIS LST, TMF, ...
 -   moisture flow @10.5194/essd-12-3177-2020, <https://doi.pangaea.de/10.1594/PANGAEA.912710>
 -   evaluation against stations
+-   computing: local, genologin, F&S server
+-   tools: python, R, snakemake, quarto, mamba, earth-engine
+-   data: local extraction and then indices computing with dask (possible distribution on cluster for heavlifting)

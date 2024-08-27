@@ -7,7 +7,7 @@ amazonia = snakemake.input
 nc = snakemake.output
 
 # test
-zarr = "results/data/precipitation/chirps.zarr"
+zarr = "results/data/temperature/gshtd.zarr"
         
 # libs
 import xarray as xr
@@ -18,22 +18,20 @@ from scipy import stats
 ds = xr.open_zarr(zarr)
 
 # yearly pr
-ds_year = ds.resample(time="Y").sum()
+ds_year = ds.resample(time="Y").mean()
 ds_year["time"] = ds_year.time.dt.year
 ds_year = ds_year.rename({"time": "year"})
-ds_year.to_netcdf("results/data/precipitation/chirps_year.nc")
+ds_year.to_netcdf("results/data/temperature/gshtd_year.nc")
 
 # yearly anom
 ds_year_anom = ds_year
-ds_year_anom['pr'] = ds_year.pr - ds_year.mean(dim="year").pr
-ds_year_anom = ds_year_anom.rename({'pr' : 'pr_anom'})
-ds_year_anom.to_netcdf("results/data/precipitation/chirps_anom.nc")
+ds_year_anom = ds_year - ds_year.mean(dim="year")
+ds_year_anom.to_netcdf("results/data/temperature/gshtd_anom.nc")
 
 # yearly stdanom
 ds_year_anom = ds_year
-ds_year_anom['pr'] = ((ds_year.pr - ds_year.mean(dim="year").pr)+0.1)/(ds_year.std(dim="year").pr+0.1)
-ds_year_anom = ds_year_anom.rename({'pr' : 'pr_stdanom'})
-ds_year_anom.to_netcdf("results/data/precipitation/chirps_stdanom.nc")
+ds_year_anom = (ds_year - ds_year.mean(dim="year"))/ds_year.std(dim="year")
+ds_year_anom.to_netcdf("results/data/temperature/gshtd_stdanom.nc")
 
 # yearly tau
 ds_year_anom = ds_year_anom.chunk({"lon": 1000, "lat": 1000, "year": -1}) # to work across years
@@ -43,7 +41,7 @@ import xarray as xr
 import numpy as np
 from scipy import stats 
 
-ds_year_anom = xr.open_dataset("results/data/precipitation/chirps_anom.nc")
+# ds_year_anom = xr.open_dataset("results/data/precipitation/.nc")
 
 def tau(x, y):
         tau, p_value = stats.kendalltau(x, y)
@@ -63,4 +61,4 @@ stats = xr.apply_ufunc(tau,
 ds_year_tau = ds_year_anom[['lon', 'lat']]
 ds_year_tau["tau"] = stats[:,:,0]
 ds_year_tau["pval"] = stats[:,:,1]
-ds_year_tau.to_netcdf("results/data/precipitation/chirps_tau.nc")
+# ds_year_tau.to_netcdf("results/data/precipitation/.nc")

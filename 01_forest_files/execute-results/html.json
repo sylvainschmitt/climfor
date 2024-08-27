@@ -1,0 +1,16 @@
+{
+  "hash": "6d2229023a68d1fbc2c9800589dc339e",
+  "result": {
+    "markdown": "\n\n\n# Forest {.unnumbered}\n\nTMF\n\n\n::: {.cell}\n\n```{.r .cell-code}\nrast(\"results/data/forest/tmf.nc\") %>% \n  as.data.frame() %>% \n  gather(year, value) %>% \n  mutate(year = as.numeric(gsub(\"tmf_year=\", \"\", year))) %>% \n  mutate(type = recode(value, \n                       \"1\" = \"undisturbed\",\n                       \"2\" = \"degraded\",\n                       \"3\" = \"deforested\",\n                       \"4\" = \"regrowth\",\n                       \"5\" = \"water\",\n                       \"6\" = \"other\")) %>% \n  group_by(year, type) %>% \n  summarise(N = n()) %>% \n  ggplot(aes(year, N, col = type)) +\n  geom_line() +\n  theme_bw()\n```\n\n::: {.cell-output-display}\n![](01_forest_files/figure-html/forest-1.png){width=672}\n:::\n:::\n",
+    "supporting": [
+      "01_forest_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
