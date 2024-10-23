@@ -36,3 +36,13 @@ ds.to_zarr(zarr)
 # from matplotlib import pyplot as plt
 # ds.sel(time="1981-01-01").pr.plot()
 # plt.show()
+
+ds = xr.open_dataset(zarr)
+import numpy as np
+x_coord = -54.9588900
+y_coord = -2.85667
+ds2 = ds.interp({'lon':x_coord, 'lat':y_coord}, method='linear')
+ds2.to_netcdf("tapajos_chirps.nc")
+
+val = np.diagonal(ds.interp({'lon':x_coord, 'lat':y_coord}, method='linear').values[0,:,:])
+print(val)

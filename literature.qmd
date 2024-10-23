@@ -2,4 +2,13 @@
 
 ## To read
 
--   
+-   @vanpassel2024 good method, data and codes shared
+-   @hammond2022
+-   @wunderling2022 network for moisture recycling
+-   @verbesselt2016
+-   @anderegg2019
+-   @bousquet2022
+-   @smith2023 open python codes including tau
+-   @anderson2018
+-   @liu2019 early warning system (EWS) using bayesian dynamic linear model (DLM)
+-   @slette2019; @zang2019 ; @slette2019a on SPEI usage
